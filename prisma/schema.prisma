@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @unique @default(uuid())
+  email           String    @unique
+  password        String
+  name            String
+  surname         String
+  studentRegister String    @unique @map("student_register")
+  role            UserRole  @default(STUDENT)
+  createdAt       DateTime  @default(now()) @map("created_at")
+  schoolId        String    @map("school_id")
+  session_id      String
+  Comment         Comment[]
+  Period          Period[]
+  Rating          Rating[]
+  school          School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  @@map("users")
+}
+
+model Period {
+  id        String   @id @unique @default(uuid())
+  order     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("periods")
+}
+
+model School {
+  id        String   @id @unique @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  Course    Course[]
+  User      User[]
+
+  @@map("schools")
+}
+
+model Course {
+  id        String    @id @unique @default(uuid())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  schoolId  String    @map("school_id")
+  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  Subject   Subject[]
+
+  @@map("courses")
+}
+
+model Subject {
+  id        String    @id @unique @default(uuid())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  courseId  String    @map("course_id")
+  Comment   Comment[]
+  Rating    Rating[]
+  course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("subjects")
+}
+
+model Rating {
+  id        String   @id @unique @default(uuid())
+  sentence  String
+  score     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+  subjectId String   @map("subject_id")
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("ratings")
+}
+
+model Comment {
+  id        String   @id @unique @default(uuid())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+  subjectId String   @map("subject_id")
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
+}
