@@ -6,6 +6,8 @@ import { config } from 'dotenv';
 config();
 
 const app = fastify();
+const port = process.env.PORT || 3001;
+
 
 app.register(fastifyJwt, {
   secret: process.env.JWT_SECRET as string,
@@ -24,10 +26,14 @@ app.register(adminRoutes, { prefix: '/admin' })
 
 
 
-app
-  .listen({
-    port: 3001,
-  })
-  .then(() => {
-    console.log("ON THE AIR! 🎙️");
-  });
+// app
+//   .listen({port
+//   })
+//   .then(() => {
+//     console.log("ON THE AIR! 🎙️");
+//   });
+
+app.listen(port, "0.0.0.0").then(() => {
+      console.log("ON THE AIR! 🎙️");
+   });;
+
