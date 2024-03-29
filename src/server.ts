@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import cors from '@fastify/cors'
 import cookie from '@fastify/cookie';
 import fastifyJwt from "@fastify/jwt";
 import { adminRoutes, usersRoutes } from "./routes/routes";
@@ -7,6 +8,11 @@ config();
 
 const app = fastify();
 const port = process.env.PORT || 3001;
+
+
+app.register(cors, {
+  origin: true,
+})
 
 
 app.register(fastifyJwt, {
@@ -34,6 +40,6 @@ app.register(adminRoutes, { prefix: '/admin' })
 //   });
 
 app.listen(port, "0.0.0.0").then(() => {
-      console.log("ON THE AIR! 🎙️");
-   });;
+  console.log("ON THE AIR! 🎙️");
+});;
 

@@ -12,7 +12,9 @@ import { refresh } from './refresh'
 
 import { schoolRoutes, create } from './school'
 import { createCourse, getAllCourses, deleteCourse } from './course'
-import { createSubject, deleteSubject, getAllSubjects } from './subject'
+import { createSubject, getAllSubjects } from './subject'
+import { createRating } from './rating'
+
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', register)
@@ -20,6 +22,7 @@ export async function usersRoutes(app: FastifyInstance) {
 
   app.patch('/token/refresh', refresh)
 
+  app.post('/rating', createRating)
   /** Authenticated */
   app.get('/me', { onRequest: [verifyJwt] }, profile)
 }
