@@ -109,3 +109,34 @@ export async function getUsersCountBySchool(request: FastifyRequest, reply: Fast
 }
 
 
+export async function getUserSubjects(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+    try {
+        const userId = request.params.id; // Extrai o ID da rota
+
+        // Buscar o usuário pelo ID
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                school: {
+                    select: {
+                        Course: {
+                            select: {
+                                Subject: true,
+                                
+                            }
+                        }
+                    }
+                } // Incluir os subjects associados ao usuário
+            },
+        });
+
+        if (!user) {
+            return reply.status(404).send({ message: 'User not found' });
+        }
+
+        return reply.status(200).send(user.school.Course);
+    } catch (error) {
+        console.error('Error fetching subjects by user ID:', error);
+        return reply.status(500).send({ error: 'Internal server error' });
+    }
+}

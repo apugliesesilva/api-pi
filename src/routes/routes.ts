@@ -14,7 +14,7 @@ import { schoolRoutes, create } from './school'
 import { createCourse, getAllCourses, deleteCourse } from './course'
 import { createSubject, getAllSubjects } from './subject'
 import { createRating } from './rating'
-import { getUsersCountBySchool, getUserDetails, getUsers } from './insights'
+import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects } from './insights'
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -29,6 +29,8 @@ export async function usersRoutes(app: FastifyInstance) {
 
 
   /** Insights USER */
+
+  app.get('/subjectsbyuser/:id', getUserSubjects)
 
 }
 
