@@ -9,7 +9,7 @@ export function verifyUserRole(roleToVerify: 'ADMIN' | 'STUDENT') {
     const { role } = request.user as { role: 'ADMIN' | 'STUDENT' };
 
     if (role !== roleToVerify) {
-      return reply.status(401).send({ message: 'Unauthorized.' });
+      return reply.status(401).send({ message: 'Não autorizado.' });
     }
   }
 }
