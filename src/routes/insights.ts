@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -74,6 +74,36 @@ export async function getUserDetails(request: FastifyRequest, reply: FastifyRepl
         }
     } catch (error) {
         console.error('Error fetching user details:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
+
+export async function getUsersCountBySchool(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        // Consulta a quantidade de usuários por escola
+        const usersCountBySchool = await prisma.school.findMany({
+            select: {
+                id: true,
+                name: true,
+                User: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        });
+
+        // Mapeia os resultados para calcular o número de usuários por escola
+        const formattedResults = usersCountBySchool.map(school => ({
+            id: school.id,
+            name: school.name,
+            usersCount: school.User.length
+        }));
+
+        // Retorna os resultados
+        reply.status(200).send({ usersCountBySchool: formattedResults });
+    } catch (error) {
+        console.error('Error fetching users count by school:', error);
         reply.status(500).send({ error: 'Internal server error' });
     }
 }

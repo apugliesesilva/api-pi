@@ -14,7 +14,7 @@ import { schoolRoutes, create } from './school'
 import { createCourse, getAllCourses, deleteCourse } from './course'
 import { createSubject, getAllSubjects } from './subject'
 import { createRating } from './rating'
-import { getUserDetails, getUsers } from './insights'
+import { getUsersCountBySchool, getUserDetails, getUsers } from './insights'
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -44,6 +44,7 @@ export async function adminRoutes(app: FastifyInstance) {
 
   app.get('/getusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsers)
   app.get('/getuserdetails', { onRequest: [verifyUserRole('ADMIN')] }, getUserDetails)
+  app.get('/getusersbyschool', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCountBySchool)
 
 
   app.post('/', { onRequest: [verifyUserRole('ADMIN')] }, create)
