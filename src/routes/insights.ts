@@ -107,3 +107,5 @@ export async function getUsersCountBySchool(request: FastifyRequest, reply: Fast
         reply.status(500).send({ error: 'Internal server error' });
     }
 }
+
+

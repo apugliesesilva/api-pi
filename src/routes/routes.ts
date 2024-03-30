@@ -26,6 +26,10 @@ export async function usersRoutes(app: FastifyInstance) {
   app.post('/rating', createRating)
   /** Authenticated */
   app.get('/me', { onRequest: [verifyJwt] }, profile)
+
+
+  /** Insights USER */
+
 }
 
 
