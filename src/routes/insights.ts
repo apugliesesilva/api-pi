@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { PrismaClient, User } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -35,6 +35,38 @@ export async function getUsers(request: FastifyRequest, reply: FastifyReply) {
     }
 }
 
+export async function getUsersCount(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        // Consulta o número total de usuários
+        const totalUsers = await prisma.user.count();
+
+        // Retorna apenas o número total de usuários
+        reply.status(200).send({ totalUsers });
+    } catch (error) {
+        console.error('Error fetching total number of users:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
+
+export async function getUsersWithRatings(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        // Consulta o número de usuários que têm ratings
+        const usersWithRatingsCount = await prisma.rating.aggregate({
+            _count: {
+                userId: true,
+            },
+        });
+
+        // Extrai o número total de usuários com ratings
+        const totalUsersWithRatings = usersWithRatingsCount._count.userId;
+
+        // Retorna apenas o número total de usuários que têm ratings
+        reply.status(200).send({ totalUsersWithRatings });
+    } catch (error) {
+        console.error('Error fetching number of users with ratings:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
 
 
 export async function getUserDetails(request: FastifyRequest, reply: FastifyReply) {
@@ -122,7 +154,7 @@ export async function getUserSubjects(request: FastifyRequest<{ Params: { id: st
                         Course: {
                             select: {
                                 Subject: true,
-                                
+
                             }
                         }
                     }

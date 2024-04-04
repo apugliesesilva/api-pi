@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify'
+import { FastifyInstance, FastifyReply } from 'fastify'
 import { verifyJwt } from '../middlewares/verify-jwt'
 import { verifyUserRole } from '../middlewares/verify-user-role'
 
@@ -14,7 +14,7 @@ import { schoolRoutes, create } from './school'
 import { createCourse, getAllCourses, deleteCourse } from './course'
 import { createSubject, getAllSubjects } from './subject'
 import { createRating } from './rating'
-import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects } from './insights'
+import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings } from './insights'
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -49,9 +49,10 @@ export async function adminRoutes(app: FastifyInstance) {
 
 
   app.get('/getusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsers)
+  app.get('/totalusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCount)
+  app.get('/userwithratings', { onRequest: [verifyUserRole('ADMIN')] }, getUsersWithRatings)
   app.get('/getuserdetails', { onRequest: [verifyUserRole('ADMIN')] }, getUserDetails)
   app.get('/getusersbyschool', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCountBySchool)
-
 
   app.post('/', { onRequest: [verifyUserRole('ADMIN')] }, create)
 }
