@@ -11,7 +11,7 @@ import { refresh } from './refresh'
 // admin
 
 import { schoolRoutes, create } from './school'
-import { createCourse, getAllCourses, deleteCourse } from './course'
+import { createCourse, getAllCourses, deleteCourse, getCoursesBySchool, getCoursesWithSubjectsBySchool } from './course'
 import { createSubject, getAllSubjects } from './subject'
 import { createRating } from './rating'
 import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings } from './insights'
@@ -53,6 +53,8 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/userwithratings', { onRequest: [verifyUserRole('ADMIN')] }, getUsersWithRatings)
   app.get('/getuserdetails', { onRequest: [verifyUserRole('ADMIN')] }, getUserDetails)
   app.get('/getusersbyschool', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCountBySchool)
+  app.get('/getcoursesbyschool/:schoolId', { onRequest: [verifyUserRole('ADMIN')]}, getCoursesBySchool)
+  app.get('/getcourseswsubjects/:schoolId', { onRequest: [verifyUserRole('ADMIN')]}, getCoursesWithSubjectsBySchool)
 
   app.post('/', { onRequest: [verifyUserRole('ADMIN')] }, create)
 }

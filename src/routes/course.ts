@@ -74,3 +74,50 @@ export async function getAllCourses(request: FastifyRequest, reply: FastifyReply
         reply.status(500).send({ error: 'Internal server error' });
     }
 }
+
+export async function getCoursesBySchool(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const { schoolId } = request.params as { schoolId: string };
+        if (!schoolId || typeof schoolId !== 'string') {
+            reply.status(400).send({ error: 'Invalid or missing schoolId parameter' });
+            return;
+        }
+
+        const courses = await prisma.course.findMany({
+            where: {
+                schoolId: {
+                    equals: schoolId
+                }
+            }
+        });
+
+        reply.status(200).send({ courses });
+    } catch (error) {
+        console.error('Error fetching courses by school:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
+
+export async function getCoursesWithSubjectsBySchool(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        const { schoolId } = request.params as { schoolId: string };
+        if (!schoolId || typeof schoolId !== 'string') {
+            reply.status(400).send({ error: 'Invalid or missing schoolId parameter' });
+            return;
+        }
+
+        const coursesWithSubjects = await prisma.course.findMany({
+            where: {
+                schoolId: schoolId
+            },
+            include: {
+                Subject: true
+            }
+        });
+
+        reply.status(200).send({ coursesWithSubjects });
+    } catch (error) {
+        console.error('Error fetching courses with subjects by school:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
