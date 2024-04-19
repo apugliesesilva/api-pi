@@ -38,7 +38,7 @@ export class ForgetPasswordUseCase {
     });
 
     // Enviar email com o link de redefinição de senha
-    const resetLink = `https://seusite.com/reset-password?tokenPassword=${tokenPassword}`;
+    const resetLink = `https://pi-unicap.vercel.app/reset-password?tokenPassword=${tokenPassword}`;
     await sendResetPasswordEmail(email, resetLink);
 
     return {
