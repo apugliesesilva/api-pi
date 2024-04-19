@@ -7,6 +7,7 @@ import { authenticate } from './authenticate'
 import { register } from './register'
 import { profile } from './profile'
 import { refresh } from './refresh'
+import { forgetPassword } from './password'
 
 // admin
 
@@ -20,6 +21,8 @@ import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUs
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', register)
   app.post('/sessions', authenticate)
+
+  app.post('/forget-password', forgetPassword)
 
   app.patch('/token/refresh', refresh)
 

@@ -94,6 +94,13 @@ model Comment {
   @@map("comments")
 }
 
+model PasswordReset {
+  id          Int      @id @default(autoincrement())
+  email       String
+  tokenPassword  String
+}
+
+
 enum UserRole {
   STUDENT
   ADMIN
