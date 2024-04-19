@@ -16,6 +16,7 @@ import { createCourse, getAllCourses, deleteCourse, getCoursesBySchool, getCours
 import { createSubject, getAllSubjects } from './subject'
 import { createRating } from './rating'
 import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings } from './insights'
+import { changePassword } from './changepassword'
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -23,6 +24,7 @@ export async function usersRoutes(app: FastifyInstance) {
   app.post('/sessions', authenticate)
 
   app.post('/forget-password', forgetPassword)
+  app.post('/change-password', changePassword)
 
   app.patch('/token/refresh', refresh)
 
