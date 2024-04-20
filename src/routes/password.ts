@@ -65,8 +65,9 @@ async function sendResetPasswordEmail(email: string, resetLink: string) {
     from: 'MS_pjx2up@trial-pq3enl6y9d7g2vwr.mlsender.net',
     to: email,
     subject: 'Redefinir senha - Sistema de Avaliação',
-    text: `Para redefinir sua senha, acesse o seguinte link: ${resetLink}`,
+    html: `<b> </b>Para redefinir sua senha,</b> <a href="${resetLink}">clique aqui</a>.<br><img src="https://i.imgur.com/mEo6WvO.png" alt="Sistema de Avaliação Logo"/>`,
   });
+  
 }
 
 export async function forgetPassword(
