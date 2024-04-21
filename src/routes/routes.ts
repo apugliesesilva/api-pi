@@ -15,7 +15,7 @@ import { schoolRoutes, create } from './school'
 import { createCourse, getAllCourses, deleteCourse, getCoursesBySchool, getCoursesWithSubjectsBySchool, getCoursePerformanceBySubject } from './course'
 import { createSubject, getAllSubjects } from './subject'
 import { createRating, getAverageScoresBySubject, getRatingCountByDay, getRatingDistribution, getRatingMetricsBySentence } from './rating'
-import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings, getUsersTen, getUsersAll } from './insights'
+import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings, getUsersAll, getTen } from './insights'
 import { changePassword } from './changepassword'
 import { FastifyRequest } from 'fastify/types/request'
 
@@ -65,8 +65,9 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/getratingdistribution', { onRequest: [verifyUserRole('ADMIN')]}, getRatingDistribution)
   app.get('/getcourseperfom', { onRequest: [verifyUserRole('ADMIN')]}, getCoursePerformanceBySubject)
   app.get('/getratingmetrics', { onRequest: [verifyUserRole('ADMIN')]}, getRatingMetricsBySentence)
-  
-  app.get('/getusersten', { onRequest: [verifyUserRole('ADMIN')] }, getUsersTen)
+
+  app.get('/getten', { onRequest: [verifyUserRole('ADMIN')]}, getTen)
+
   app.get('/getusersall', { onRequest: [verifyUserRole('ADMIN')] }, getUsersAll)
 
   app.post('/', { onRequest: [verifyUserRole('ADMIN')] }, create)

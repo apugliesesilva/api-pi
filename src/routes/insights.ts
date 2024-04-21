@@ -59,9 +59,8 @@ export async function getUsersAll(request: FastifyRequest, reply: FastifyReply) 
 }
 
 
-export async function getUsersTen(request: FastifyRequest, reply: FastifyReply) {
+export async function getTen(request: FastifyRequest, reply: FastifyReply) {
     try {
-        // Consulta os últimos 10 usuários criados
         const users = await prisma.user.findMany({
             select: {
                 name: true,
