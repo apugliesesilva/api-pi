@@ -52,8 +52,7 @@ export async function adminRoutes(app: FastifyInstance) {
   app.post('/subjects', { onRequest: [verifyUserRole('ADMIN')] }, createSubject);
   app.get('/subjects', { onRequest: [verifyUserRole('ADMIN')] }, getAllSubjects);
 
-  app.get('/getusersten', { onRequest: [verifyUserRole('ADMIN')] }, getUsersTen)
-  app.get('/getusersall', { onRequest: [verifyUserRole('ADMIN')] }, getUsersAll)
+
   app.get('/getusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsers)
   app.get('/totalusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCount)
   app.get('/userwithratings', { onRequest: [verifyUserRole('ADMIN')] }, getUsersWithRatings)
