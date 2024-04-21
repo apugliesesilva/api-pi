@@ -35,6 +35,56 @@ export async function getUsers(request: FastifyRequest, reply: FastifyReply) {
     }
 }
 
+export async function getUsersAll(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        // Consulta todos os usuários sem paginação
+        const users = await prisma.user.findMany({
+            select: {
+                name: true,
+                email: true,
+                surname: true,
+                school: { select: { name: true } },
+            },
+        });
+
+        if (users.length === 0) {
+            reply.status(404).send({ error: 'Users not found' });
+        } else {
+            reply.status(200).send({ users });
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
+
+
+export async function getUsersTen(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        // Consulta os últimos 10 usuários criados
+        const users = await prisma.user.findMany({
+            select: {
+                name: true,
+                surname: true,
+                email: true,
+                school: { select: { name: true } },
+            },
+            orderBy: { createdAt: 'desc' }, // Ordena por data de criação em ordem decrescente
+            take: 10 // Retorna os últimos 10 usuários
+        });
+
+        if (users.length === 0) {
+            reply.status(404).send({ error: 'Users not found' });
+        } else {
+            reply.status(200).send({ users });
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
+
+
 export async function getUsersCount(request: FastifyRequest, reply: FastifyReply) {
     try {
         // Consulta o número total de usuários
