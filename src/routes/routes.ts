@@ -12,12 +12,12 @@ import { forgetPassword } from './password'
 // admin
 
 import { schoolRoutes, create } from './school'
-import { createCourse, getAllCourses, deleteCourse, getCoursesBySchool, getCoursesWithSubjectsBySchool } from './course'
+import { createCourse, getAllCourses, deleteCourse, getCoursesBySchool, getCoursesWithSubjectsBySchool, getCoursePerformanceBySubject } from './course'
 import { createSubject, getAllSubjects } from './subject'
-import { createRating } from './rating'
+import { createRating, getAverageScoresBySubject, getRatingCountByDay, getRatingDistribution, getRatingMetricsBySentence } from './rating'
 import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings } from './insights'
 import { changePassword } from './changepassword'
-
+import { FastifyRequest } from 'fastify/types/request'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', register)
@@ -60,6 +60,12 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/getusersbyschool', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCountBySchool)
   app.get('/getcoursesbyschool/:schoolId', { onRequest: [verifyUserRole('ADMIN')]}, getCoursesBySchool)
   app.get('/getcourseswsubjects/:schoolId', { onRequest: [verifyUserRole('ADMIN')]}, getCoursesWithSubjectsBySchool)
+  app.get('/getscorebysubject', { onRequest: [verifyUserRole('ADMIN')]}, getAverageScoresBySubject)
+  app.get('/getratingbyday', { onRequest: [verifyUserRole('ADMIN')]}, getRatingCountByDay)
+  app.get('/getratingdistribution', { onRequest: [verifyUserRole('ADMIN')]}, getRatingDistribution)
+  app.get('/getcourseperfom', { onRequest: [verifyUserRole('ADMIN')]}, getCoursePerformanceBySubject)
+  app.get('/getratingmetrics', { onRequest: [verifyUserRole('ADMIN')]}, getRatingMetricsBySentence)
 
   app.post('/', { onRequest: [verifyUserRole('ADMIN')] }, create)
 }
+

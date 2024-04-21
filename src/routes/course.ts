@@ -121,3 +121,53 @@ export async function getCoursesWithSubjectsBySchool(request: FastifyRequest, re
         reply.status(500).send({ error: 'Internal server error' });
     }
 }
+
+export async function getCoursePerformanceBySubject(request: FastifyRequest, reply: FastifyReply) {
+    try {
+        // Consultar o banco de dados para obter informações sobre os cursos e seus ratings
+        const courses = await prisma.course.findMany({
+            include: {
+                Subject: {
+                    include: {
+                        Rating: true,
+                        Comment: true,
+                    }
+                }
+            }
+        });
+
+        // Criar um objeto para armazenar o desempenho dos cursos por subject
+        const performanceData: Record<string, { averageScore: number; completionRate: number; numberOfComments: number }> = {};
+
+        // Calcular métricas de desempenho para cada subject
+        courses.forEach((course: any) => {
+            course.Subject.forEach((subject: any) => {
+                const ratings = subject.Rating;
+                const comments = subject.Comment;
+
+                // Calcular a média dos scores
+                const totalScore = ratings.reduce((sum: number, rating: any) => sum + rating.score, 0);
+                const averageScore = totalScore / ratings.length || 0;
+
+                // Calcular a taxa de conclusão
+                const completionRate = ratings.length > 0 ? (comments.length / ratings.length) * 100 : 0;
+
+                // Obter o número de comentários
+                const numberOfComments = comments.length;
+
+                // Armazenar as métricas no objeto de desempenho
+                performanceData[subject.name] = {
+                    averageScore,
+                    completionRate,
+                    numberOfComments,
+                };
+            });
+        });
+
+        // Enviar os dados de desempenho dos cursos por subject como resposta
+        reply.status(200).send({ coursePerformanceBySubject: performanceData });
+    } catch (error) {
+        console.error('Error fetching course performance by subject:', error);
+        reply.status(500).send({ error: 'Internal server error' });
+    }
+}
