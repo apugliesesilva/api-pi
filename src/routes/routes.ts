@@ -18,6 +18,7 @@ import { createRating, getAverageScoresBySubject, getRatingCountByDay, getRating
 import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings, getUsersAll, getTen } from './insights'
 import { changePassword } from './changepassword'
 import { FastifyRequest } from 'fastify/types/request'
+import { createComment, getAllComments } from './comment'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', register)
@@ -29,6 +30,10 @@ export async function usersRoutes(app: FastifyInstance) {
   app.patch('/token/refresh', refresh)
 
   app.post('/rating', createRating)
+
+  app.post('/comments', createComment)
+  app.get('/comments', getAllComments)
+
   /** Authenticated */
   app.get('/me', { onRequest: [verifyJwt] }, profile)
 
@@ -51,6 +56,7 @@ export async function adminRoutes(app: FastifyInstance) {
 
   app.post('/subjects', { onRequest: [verifyUserRole('ADMIN')] }, createSubject);
   app.get('/subjects', { onRequest: [verifyUserRole('ADMIN')] }, getAllSubjects);
+
 
 
   app.get('/getusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsers)
