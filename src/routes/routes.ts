@@ -41,7 +41,7 @@ export async function usersRoutes(app: FastifyInstance) {
   /** Insights USER */
 
   app.get('/subjectsbyuser/:id', getUserSubjects)
-
+  app.get('/getratingmetrics', getRatingMetricsBySentence)
 }
 
 
@@ -70,7 +70,7 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/getratingbyday', { onRequest: [verifyUserRole('ADMIN')]}, getRatingCountByDay)
   app.get('/getratingdistribution', { onRequest: [verifyUserRole('ADMIN')]}, getRatingDistribution)
   app.get('/getcourseperfom', { onRequest: [verifyUserRole('ADMIN')]}, getCoursePerformanceBySubject)
-  app.get('/getratingmetrics', { onRequest: [verifyUserRole('ADMIN')]}, getRatingMetricsBySentence)
+  // app.get('/getratingmetrics', { onRequest: [verifyUserRole('ADMIN')]}, getRatingMetricsBySentence)
 
   app.get('/getten', { onRequest: [verifyUserRole('ADMIN')]}, getTen)
 
