@@ -19,6 +19,7 @@ import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUs
 import { changePassword } from './changepassword'
 import { FastifyRequest } from 'fastify/types/request'
 import { createComment, getAllComments } from './comment'
+import { obterDados } from './pdf'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', register)
@@ -71,6 +72,8 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/getratingdistribution', { onRequest: [verifyUserRole('ADMIN')]}, getRatingDistribution)
   app.get('/getcourseperfom', { onRequest: [verifyUserRole('ADMIN')]}, getCoursePerformanceBySubject)
   app.get('/getratingmetrics', getRatingMetricsBySentence)
+
+  app.get('/getdata', { onRequest: [verifyUserRole('ADMIN')]}, obterDados)
 
   app.get('/getten', { onRequest: [verifyUserRole('ADMIN')]}, getTen)
 
