@@ -95,11 +95,10 @@ model Comment {
 }
 
 model PasswordReset {
-  id          Int      @id @default(autoincrement())
-  email       String
-  tokenPassword  String
+  id            Int    @id @default(autoincrement())
+  email         String
+  tokenPassword String
 }
-
 
 enum UserRole {
   STUDENT
