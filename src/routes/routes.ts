@@ -21,6 +21,7 @@ import { FastifyRequest } from 'fastify/types/request'
 import { createComment, getAllComments } from './comment'
 import { obterDados } from './pdftwo'
 import { createPeriod, deletePeriod, getAllPeriods, getPeriodsByUser, getPeriodsWithSubjectsByUser, createSubjectPeriod, getCoursesWithSchoolsPeriodsAndSubjects, getSubjectsByStudentPeriodAndCourse, getUserSubjectsFilteredByOrder } from './period';
+import { captureData } from './periodPDF'
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -78,6 +79,7 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/getratingmetrics', getRatingMetricsBySentence)
 
   app.get('/getdata', { onRequest: [verifyUserRole('ADMIN')] }, obterDados)
+  app.get('/capturedata/:periodId', { onRequest: [verifyUserRole('ADMIN')] }, captureData)
 
   app.get('/getten', { onRequest: [verifyUserRole('ADMIN')] }, getTen)
 
