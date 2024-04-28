@@ -13,7 +13,7 @@ import { forgetPassword } from './password'
 
 import { schoolRoutes, create } from './school'
 import { createCourse, getAllCourses, deleteCourse, getCoursesBySchool, getCoursesWithSubjectsBySchool, getCoursePerformanceBySubject } from './course'
-import { createSubject, getAllSubjects } from './subject'
+import { createSubject, deleteSubject, getAllSubjects } from './subject'
 import { createRating, getAverageScoresBySubject, getRatingCountByDay, getRatingDistribution, getRatingMetricsBySentence } from './rating'
 import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings, getUsersAll, getTen } from './insights'
 import { changePassword } from './changepassword'
@@ -45,6 +45,7 @@ export async function usersRoutes(app: FastifyInstance) {
 
   app.get('/subjectsbyuser/:id', getUserSubjects)
   app.get('/subjects-filtered-by-order/:id', getUserSubjectsFilteredByOrder);
+  app.delete('/delsub/:id', deleteSubject);
 
 }
 

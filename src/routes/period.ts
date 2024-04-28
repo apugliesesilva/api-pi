@@ -234,40 +234,43 @@ export async function getSubjectsByStudentPeriodAndCourse(request: FastifyReques
 
 export async function getUserSubjectsFilteredByOrder(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
   try {
-      const userId = request.params.id; // Extrai o ID da rota
+    const userId = request.params.id; // Extrair o ID da rota
 
-      // Buscar o usuário pelo ID
-      const user = await prisma.user.findUnique({
-          where: { id: userId },
+    // Buscar o usuário pelo ID e incluir apenas as matérias associadas ao período do usuário
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        school: {
           select: {
-              school: {
-                  select: {
-                      Course: {
-                          select: {
-                              Subject: {
-                                  where: {
-                                      periodId: { not: null } // Filtrar apenas matérias com período associado
-                                  },
-                                  orderBy: {
-                                      Period: {
-                                          order: 'asc' // Ordenar matérias pelo order do período
-                                      }
-                                  }
-                              }
-                          }
-                      }
+            Course: {
+              select: {
+                Subject: {
+                  where: {
+                    Period: { userId: userId } // Filtro pelo userId no período associado à matéria
+                  },
+                  include: {
+                    Period: true // Incluir informações do período associado à matéria
+                  },
+                  orderBy: {
+                    Period: {
+                      order: 'asc' // Ordenar matérias pelo order do período
+                    }
                   }
-              } // Incluir os subjects associados ao usuário
-          },
-      });
+                }
+              }
+            }
+          }
+        } // Incluir os subjects associados ao usuário
+      },
+    });
 
-      if (!user) {
-          return reply.status(404).send({ message: 'User not found' });
-      }
+    if (!user) {
+      return reply.status(404).send({ message: 'User not found' });
+    }
 
-      return reply.status(200).send(user.school.Course);
+    return reply.status(200).send(user.school.Course);
   } catch (error) {
-      console.error('Error fetching subjects by user ID:', error);
-      return reply.status(500).send({ error: 'Internal server error' });
+    console.error('Error fetching subjects by user ID:', error);
+    return reply.status(500).send({ error: 'Internal server error' });
   }
 }
