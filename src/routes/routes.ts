@@ -19,7 +19,7 @@ import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUs
 import { changePassword } from './changepassword'
 import { FastifyRequest } from 'fastify/types/request'
 import { createComment, getAllComments } from './comment'
-import { obterDados } from './pdf'
+import { obterDados } from './pdftwo'
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -66,17 +66,17 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/userwithratings', { onRequest: [verifyUserRole('ADMIN')] }, getUsersWithRatings)
   app.get('/getuserdetails', { onRequest: [verifyUserRole('ADMIN')] }, getUserDetails)
   app.get('/getusersbyschool', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCountBySchool)
-  app.get('/getcoursesbyschool/:schoolId', { onRequest: [verifyUserRole('ADMIN')]}, getCoursesBySchool)
-  app.get('/getcourseswsubjects/:schoolId', { onRequest: [verifyUserRole('ADMIN')]}, getCoursesWithSubjectsBySchool)
-  app.get('/getscorebysubject', { onRequest: [verifyUserRole('ADMIN')]}, getAverageScoresBySubject)
-  app.get('/getratingbyday', { onRequest: [verifyUserRole('ADMIN')]}, getRatingCountByDay)
-  app.get('/getratingdistribution', { onRequest: [verifyUserRole('ADMIN')]}, getRatingDistribution)
-  app.get('/getcourseperfom', { onRequest: [verifyUserRole('ADMIN')]}, getCoursePerformanceBySubject)
+  app.get('/getcoursesbyschool/:schoolId', { onRequest: [verifyUserRole('ADMIN')] }, getCoursesBySchool)
+  app.get('/getcourseswsubjects/:schoolId', { onRequest: [verifyUserRole('ADMIN')] }, getCoursesWithSubjectsBySchool)
+  app.get('/getscorebysubject', { onRequest: [verifyUserRole('ADMIN')] }, getAverageScoresBySubject)
+  app.get('/getratingbyday', { onRequest: [verifyUserRole('ADMIN')] }, getRatingCountByDay)
+  app.get('/getratingdistribution', { onRequest: [verifyUserRole('ADMIN')] }, getRatingDistribution)
+  app.get('/getcourseperfom', { onRequest: [verifyUserRole('ADMIN')] }, getCoursePerformanceBySubject)
   app.get('/getratingmetrics', getRatingMetricsBySentence)
 
-  app.get('/getdata', { onRequest: [verifyUserRole('ADMIN')]}, obterDados)
+  app.get('/getdata', { onRequest: [verifyUserRole('ADMIN')] }, obterDados)
 
-  app.get('/getten', { onRequest: [verifyUserRole('ADMIN')]}, getTen)
+  app.get('/getten', { onRequest: [verifyUserRole('ADMIN')] }, getTen)
 
   app.get('/getusersall', { onRequest: [verifyUserRole('ADMIN')] }, getUsersAll)
 
