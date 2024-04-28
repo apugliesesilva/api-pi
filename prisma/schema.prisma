@@ -26,15 +26,15 @@ model User {
   @@map("users")
 }
 
-model Period {
-  id        String   @id @unique @default(uuid())
-  order     Int
-  createdAt DateTime @default(now()) @map("created_at")
-  userId    String   @map("user_id")
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+// model Period {
+//   id        String   @id @unique @default(uuid())
+//   order     Int
+//   createdAt DateTime @default(now()) @map("created_at")
+//   userId    String   @map("user_id")
+//   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("periods")
-}
+//   @@map("periods")
+// }
 
 model School {
   id        String   @id @unique @default(uuid())
@@ -57,14 +57,39 @@ model Course {
   @@map("courses")
 }
 
+// model Subject {
+//   id        String    @id @unique @default(uuid())
+//   name      String
+//   createdAt DateTime  @default(now()) @map("created_at")
+//   courseId  String    @map("course_id")
+//   Comment   Comment[]
+//   Rating    Rating[]
+//   course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+//   @@map("subjects")
+// }
+
+model Period {
+  id        String   @id @unique @default(uuid())
+  order     Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjects  Subject[]
+
+  @@map("periods")
+}
+
 model Subject {
   id        String    @id @unique @default(uuid())
   name      String
   createdAt DateTime  @default(now()) @map("created_at")
   courseId  String    @map("course_id")
-  Comment   Comment[]
-  Rating    Rating[]
   course    Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  Rating   Rating[]
+  Comment  Comment[]
+  Period    Period?   @relation(fields: [periodId], references: [id])
+  periodId  String?
 
   @@map("subjects")
 }

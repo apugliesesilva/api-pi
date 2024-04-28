@@ -20,6 +20,7 @@ import { changePassword } from './changepassword'
 import { FastifyRequest } from 'fastify/types/request'
 import { createComment, getAllComments } from './comment'
 import { obterDados } from './pdftwo'
+import { createPeriod, deletePeriod, getAllPeriods, getPeriodsByUser, getPeriodsWithSubjectsByUser, createSubjectPeriod, getCoursesWithSchoolsPeriodsAndSubjects, getSubjectsByStudentPeriodAndCourse, getUserSubjectsFilteredByOrder } from './period';
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -43,6 +44,7 @@ export async function usersRoutes(app: FastifyInstance) {
   /** Insights USER */
 
   app.get('/subjectsbyuser/:id', getUserSubjects)
+  app.get('/subjects-filtered-by-order/:id', getUserSubjectsFilteredByOrder);
 
 }
 
@@ -81,5 +83,23 @@ export async function adminRoutes(app: FastifyInstance) {
   app.get('/getusersall', { onRequest: [verifyUserRole('ADMIN')] }, getUsersAll)
 
   app.post('/', { onRequest: [verifyUserRole('ADMIN')] }, create)
+
+
+    // Rotas para períodos
+    app.post('/create-period', { onRequest: [verifyUserRole('ADMIN')] }, createPeriod);
+    app.delete('/delete-period/:id', { onRequest: [verifyUserRole('ADMIN')] }, deletePeriod);
+    app.get('/all-periods', { onRequest: [verifyUserRole('ADMIN')] }, getAllPeriods);
+    app.get('/periods-by-user/:userId', { onRequest: [verifyUserRole('ADMIN')] }, getPeriodsByUser);
+    app.get('/periods-with-subjects-by-user/:userId', { onRequest: [verifyUserRole('ADMIN')] }, getPeriodsWithSubjectsByUser);
+  
+    // Rota para criar uma matéria
+    app.post('/create-subject', { onRequest: [verifyUserRole('ADMIN')] }, createSubjectPeriod);
+  
+    // Rota para buscar informações sobre cursos, escolas, períodos e matérias
+    app.get('/courses-schools-periods-subjects', { onRequest: [verifyUserRole('ADMIN')] }, getCoursesWithSchoolsPeriodsAndSubjects);
+  
+    // Rota para buscar apenas os assuntos ligados ao período e curso específicos do aluno
+    app.get('/subjects-by-student-period-course/:userId/:periodId/:courseId', { onRequest: [verifyUserRole('ADMIN')] }, getSubjectsByStudentPeriodAndCourse);
+  
 }
 
