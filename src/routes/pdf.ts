@@ -113,7 +113,6 @@ export async function obterDados(request: FastifyRequest, reply: FastifyReply) {
     doc.end();
 
     // Enviar as métricas de rating por sentence como resposta
-    reply.type('application/pdf');
     reply.status(200).send({ message: 'PDF gerado com sucesso', filename });
   } catch (error) {
     console.error('Error fetching rating metrics by sentence:', error);
