@@ -19,8 +19,7 @@ import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUs
 import { changePassword } from './changepassword'
 import { FastifyRequest } from 'fastify/types/request'
 import { createComment, getAllComments } from './comment'
-import { obterDados } from './pdfto'
-// import { obterDados } from './pdf'
+import { obterDados } from './pdf'
 
 
 export async function usersRoutes(app: FastifyInstance) {
