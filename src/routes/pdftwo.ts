@@ -88,16 +88,6 @@ export async function obterDados(request: FastifyRequest, reply: FastifyReply) {
     doc.pipe(stream);
 
     // Adicionar cabeçalho ao PDF
-    const response = await fetch("https://i.imgur.com/NKQdskK.jpeg");
-
-
-const unicapcover = await response.arrayBuffer();
-
-    doc.image(unicapcover, 5, 5, { cover: [ 595, 842] });
-
-    doc.addPage();
-
-
     doc.fontSize(12).text('UNIVERSIDADE CATÓLICA DE PERNAMBUCO');
     doc.text('SISTEMA DE AVALIAÇÃO');
     doc.text('RESULTADO DA AVALIAÇÃO DISCENTE 2024.1');
