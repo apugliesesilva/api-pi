@@ -14,7 +14,7 @@ import { forgetPassword } from './password'
 import { schoolRoutes, create } from './school'
 import { createCourse, getAllCourses, deleteCourse, getCoursesBySchool, getCoursesWithSubjectsBySchool, getCoursePerformanceBySubject } from './course'
 import { createSubject, deleteSubject, getAllSubjects } from './subject'
-import { createRating, getAverageScoresBySubject, getRatingCountByDay, getRatingDistribution, getRatingMetricsBySentence } from './rating'
+import { createRating, deleteRating, getAllRatings, getAverageScoresBySubject, getRatingCountByDay, getRatingDistribution, getRatingMetricsBySentence } from './rating'
 import { getUsersCountBySchool, getUserDetails, getUsers, getUserSubjects, getUsersCount, getUsersWithRatings, getUsersAll, getTen } from './insights'
 import { changePassword } from './changepassword'
 import { FastifyRequest } from 'fastify/types/request'
@@ -62,8 +62,9 @@ export async function adminRoutes(app: FastifyInstance) {
 
   app.post('/subjects', { onRequest: [verifyUserRole('ADMIN')] }, createSubject);
   app.get('/subjects', { onRequest: [verifyUserRole('ADMIN')] }, getAllSubjects);
+  app.delete('/rating/:id', { onRequest: [verifyUserRole('ADMIN')] }, deleteRating);
 
-
+  app.get('/rating', { onRequest: [verifyUserRole('ADMIN')] }, getAllRatings);
 
   app.get('/getusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsers)
   app.get('/totalusers', { onRequest: [verifyUserRole('ADMIN')] }, getUsersCount)
@@ -88,21 +89,21 @@ export async function adminRoutes(app: FastifyInstance) {
   app.post('/', { onRequest: [verifyUserRole('ADMIN')] }, create)
 
 
-    // Rotas para períodos
-    app.post('/create-period', { onRequest: [verifyUserRole('ADMIN')] }, createPeriod);
-    app.delete('/delete-period/:id', { onRequest: [verifyUserRole('ADMIN')] }, deletePeriod);
-    app.get('/all-periods', { onRequest: [verifyUserRole('ADMIN')] }, getAllPeriods);
-    app.get('/periods-by-user/:userId', { onRequest: [verifyUserRole('ADMIN')] }, getPeriodsByUser);
-    app.get('/periods-with-subjects-by-user/:userId', { onRequest: [verifyUserRole('ADMIN')] }, getPeriodsWithSubjectsByUser);
-  
-    // Rota para criar uma matéria
-    app.post('/create-subject', { onRequest: [verifyUserRole('ADMIN')] }, createSubjectPeriod);
-  
-    // Rota para buscar informações sobre cursos, escolas, períodos e matérias
-    app.get('/courses-schools-periods-subjects', { onRequest: [verifyUserRole('ADMIN')] }, getCoursesWithSchoolsPeriodsAndSubjects);
-  
-    // Rota para buscar apenas os assuntos ligados ao período e curso específicos do aluno
-    app.get('/subjects-by-student-period-course/:userId/:periodId/:courseId', { onRequest: [verifyUserRole('ADMIN')] }, getSubjectsByStudentPeriodAndCourse);
-  
+  // Rotas para períodos
+  app.post('/create-period', { onRequest: [verifyUserRole('ADMIN')] }, createPeriod);
+  app.delete('/delete-period/:id', { onRequest: [verifyUserRole('ADMIN')] }, deletePeriod);
+  app.get('/all-periods', { onRequest: [verifyUserRole('ADMIN')] }, getAllPeriods);
+  app.get('/periods-by-user/:userId', { onRequest: [verifyUserRole('ADMIN')] }, getPeriodsByUser);
+  app.get('/periods-with-subjects-by-user/:userId', { onRequest: [verifyUserRole('ADMIN')] }, getPeriodsWithSubjectsByUser);
+
+  // Rota para criar uma matéria
+  app.post('/create-subject', { onRequest: [verifyUserRole('ADMIN')] }, createSubjectPeriod);
+
+  // Rota para buscar informações sobre cursos, escolas, períodos e matérias
+  app.get('/courses-schools-periods-subjects', { onRequest: [verifyUserRole('ADMIN')] }, getCoursesWithSchoolsPeriodsAndSubjects);
+
+  // Rota para buscar apenas os assuntos ligados ao período e curso específicos do aluno
+  app.get('/subjects-by-student-period-course/:userId/:periodId/:courseId', { onRequest: [verifyUserRole('ADMIN')] }, getSubjectsByStudentPeriodAndCourse);
+
 }
 

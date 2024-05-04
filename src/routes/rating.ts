@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyInstance, FastifyRequest, FastifyReply, RouteHandlerMethod } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
@@ -67,20 +67,32 @@ export async function getAllRatings(request: FastifyRequest, reply: FastifyReply
 }
 
 // Rota para deletar um rating por ID
-export async function deleteRating(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function deleteRating(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const { id } = request.params;
+        const { id } = request.params as { id: string };
 
-        // Deletar o rating do banco de dados
+        // Verificar se o ID do curso está presente na requisição
+        if (!id) {
+            reply.status(400).send({ error: 'Rating ID is required' });
+            return;
+        }
+
+        // Verificar se o curso existe
+        const existingCourse = await prisma.rating.findUnique({ where: { id } });
+        if (!existingCourse) {
+            reply.status(404).send({ error: 'Rating not found' });
+            return;
+        }
+
+        // Excluir o curso do banco de dados
         await prisma.rating.delete({ where: { id } });
 
-        reply.status(200).send({ message: 'Rating deleted successfully' });
+        reply.status(204).send();
     } catch (error) {
         console.error('Error deleting rating:', error);
         reply.status(500).send({ error: 'Internal server error' });
     }
 }
-
 // Rota para buscar a média dos scores por subject
 export async function getAverageScoresBySubject(request: FastifyRequest, reply: FastifyReply) {
     try {
