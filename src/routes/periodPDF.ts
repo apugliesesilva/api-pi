@@ -81,9 +81,9 @@ export async function captureData(request: FastifyRequest, reply: FastifyReply) 
     // Gerar o PDF
     const doc = new PDFDocument();
     const filename = `rating_metrics_period_${periodId}.pdf`;
-    // const stream = fs.createWriteStream(filename);
+    const stream = fs.createWriteStream(filename);
 
-    // doc.pipe(stream);
+    doc.pipe(stream);
     // const response = await fetch("https://i.imgur.com/NKQdskK.jpeg");
 
 
