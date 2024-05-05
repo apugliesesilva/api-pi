@@ -109,8 +109,8 @@ export async function captureData(request: FastifyRequest, reply: FastifyReply) 
     });
     doc.end();
 
-    // Enviar as métricas de rating por sentence como resposta
-    reply.status(200).send({ message: 'PDF gerado com sucesso', filename });
+    reply.header('Content-Disposition', `attachment; filename="${filename}"`);
+    reply.type('application/pdf').send(fs.readFileSync(filename));
   } catch (error) {
     console.error('Error fetching rating metrics by sentence:', error);
     reply.status(500).send({ error: 'Internal server error' });
