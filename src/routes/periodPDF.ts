@@ -81,17 +81,17 @@ export async function captureData(request: FastifyRequest, reply: FastifyReply) 
     // Gerar o PDF
     const doc = new PDFDocument();
     const filename = `rating_metrics_period_${periodId}.pdf`;
-    const stream = fs.createWriteStream(filename);
+    // const stream = fs.createWriteStream(filename);
 
-    doc.pipe(stream);
-    const response = await fetch("https://i.imgur.com/NKQdskK.jpeg");
+    // doc.pipe(stream);
+    // const response = await fetch("https://i.imgur.com/NKQdskK.jpeg");
 
 
-    const unicapcover = await response.arrayBuffer();
+    // const unicapcover = await response.arrayBuffer();
     
-        doc.image(unicapcover, 5, 5, { cover: [ 595, 842] });
+    //     doc.image(unicapcover, 5, 5, { cover: [ 595, 842] });
     
-        doc.addPage();
+    //     doc.addPage();
 
     // Adicionar cabeçalho ao PDF
     doc.fontSize(12).text('UNIVERSIDADE CATÓLICA DE PERNAMBUCO');
