@@ -22,10 +22,13 @@ import { createComment, getAllComments } from './comment'
 import { obterDados } from './pdftwo'
 import { createPeriod, deletePeriod, getAllPeriods, getPeriodsByUser, getPeriodsWithSubjectsByUser, createSubjectPeriod, getCoursesWithSchoolsPeriodsAndSubjects, getSubjectsByStudentPeriodAndCourse, getUserSubjectsFilteredByOrder } from './period';
 import { captureData } from './periodPDF'
+import { createAccount } from './create'
 
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/register', register)
+  app.post('/create-account', createAccount)
+
   app.post('/sessions', authenticate)
 
   app.post('/forget-password', forgetPassword)
